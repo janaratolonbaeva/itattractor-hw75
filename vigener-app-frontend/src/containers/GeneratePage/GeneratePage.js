@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Container from "@material-ui/core/Container";
 import InputPassword from "../../components/InputPassword/InputPassword";
-import {changeHandler} from "../../store/actions/vigenereActions";
+import {changeHandler, postMessageDecode, postMessageEncode} from "../../store/actions/vigenereActions";
 import TextareaMessage from "../../components/TextareaMessage/TextareaMessage";
 
 const GeneratePage = () => {
@@ -11,24 +11,34 @@ const GeneratePage = () => {
 
 	const changeHandlerValue = (e) => {
 		dispatch(changeHandler(e.target));
+		console.log(state);
+		console.log(e.target.name)
 	};
 
 	const postDecode = () => {
+		if (!state.password) {
+			return alert('Write your password');
+		}
+
 		const newMessage = {
-			decoded: state.decoded,
+			decode: state.decode,
 			password: state.password
 		}
 
-		dispatch(postMessage('/decode', newMessage));
+		dispatch(postMessageDecode(newMessage));
 	};
 
 	const postEncode = () => {
+		if (!state.password) {
+			return alert('Write your password');
+		}
+
 		const newMessage = {
-			decoded: state.encoded,
+			encode: state.encode,
 			password: state.password
 		}
 
-		dispatch(postMessage('/encode', newMessage));
+		dispatch(postMessageEncode(newMessage));
 	};
 
 	return (
@@ -36,20 +46,20 @@ const GeneratePage = () => {
 				<TextareaMessage
 					label="Decoded"
 					changeHandlerText={(e) => changeHandlerValue(e)}
-					name="decoded"
-					value={state.decoded}
+					name="decode"
+					value={state.decode}
 				/>
 				<InputPassword
 					value={state.password}
 					changeHandlerInput={(e) => changeHandlerValue(e)}
-					decoded={postDecode}
-					encoded={postEncode}
+					decoded={postEncode}
+					encoded={postDecode}
 				/>
 				<TextareaMessage
 					label="Encoded"
 					changeHandlerText={(e) => changeHandlerValue(e)}
-					name="encoded"
-					value={state.encoded}
+					name="encode"
+					value={state.encode}
 				/>
 		</Container>
 	);

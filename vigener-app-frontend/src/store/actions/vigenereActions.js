@@ -22,7 +22,6 @@ export const postMessageDecode = message => {
 			dispatch(postMessageRequestDecode());
 			const response = await axiosApi.post('/decode', message);
 			dispatch(postMessageSuccessDecode(response.data));
-			console.log(response.data);
 		} catch (e) {
 			dispatch(postMessageFailureDecode())
 		}
